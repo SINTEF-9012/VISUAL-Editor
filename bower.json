@@ -1,0 +1,12 @@
+{
+  "name": "visual-editor",
+  "private": true,
+  "dependencies": {
+    "bootstrap-sass-official": "~3.1.1",
+    "modernizr": "~2.6.2",
+    "jquery": "~1.11.0",
+    "Sortable": "~0.5.2",
+    "rebound-js": "~0.0.10"
+  },
+  "devDependencies": {}
+}
