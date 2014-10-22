@@ -19,7 +19,7 @@ body {
     padding-bottom: 20px;
 }
 
-.touchpoints {
+.visual-customer-journey {
     margin-bottom:1em;
     position:relative;
     text-align: center;
@@ -34,6 +34,11 @@ body {
         margin-top:-$height/2;
         width:100%;
         background:#333;
+    }
+
+    .visual-touchpoints {
+        display: flex;
+        justify-content:center;
     }
 }
 
