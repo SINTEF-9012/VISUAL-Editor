@@ -249,4 +249,10 @@ $bottom-height: 10em;
         display:inline;
         margin:0;
     }
+
+    &.popover-actor-btn {
+        height:30px;
+        width:30px;
+        border-radius:50%;
+    }
 }

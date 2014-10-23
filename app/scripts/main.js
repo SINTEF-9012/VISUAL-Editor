@@ -277,9 +277,18 @@ $('button.popover-btn').click(function() {
 		return;
 	}
 
+	var t = document.getElementsByClassName('visual-touchpoint-template');
+
+	if (this.classList.contains("popover-actor-btn")) {
+		item.style.borderColor = this.style.background;
+		if (t.length) {
+			t[0].style.borderColor = this.style.background; 
+		}
+		return;	
+	}
+
 	item.className = this.firstChild.className;
 
-	var t = document.getElementsByClassName('visual-touchpoint-template');
 	if (t.length) {
 		t[0].className = item.className + " visual-touchpoint-template";
 	}
