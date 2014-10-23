@@ -34,9 +34,15 @@ window.scale = function scale(el, val) {
 	el.style.transform = v;
 }
 
+function trimSpace(element) {
+ for (var i = 0; i < element.childNodes.length; i++) {
+   var node = element.childNodes[i];
+   if (node.nodeType == 3 && !/\S/.test(node.nodeValue))
+     element.removeChild(node);
+ }
+}
 
-
-var item = null; 
+var item = null, secondItem = null;
 
 spring.addListener({
 	el: null,
@@ -45,15 +51,54 @@ spring.addListener({
 		var val = spring.getCurrentValue();
 		val = mapValueFromRangeToRange(val, 0, -1, 1, 0.5);
 		scale(item, val);
+		if (secondItem != null) {
+			scale(secondItem, val);
+		}
 	}
 });
 
 
 var el = document.getElementById('main-touchpoints');
+
+trimSpace(el);
+
+
+var roger = null;
+
 new Sortable(el, {
+	group: "canard",
 	draggable: '.visual-touchpoint',
 	onStart: function(e) {
 		item = null;
+		secondItem = null;
+		//spring.setCurrentValue(-1);
+		spring.setEndValue(-1);
+		roger.options.group = "laaaaaapin";
+	},
+	onEnd: function(e) {
+		item = e.item;
+		spring.setEndValue(0);
+		roger.options.group = "canard";
+	}
+});
+
+var parentTool = null;
+
+roger = new Sortable(document.getElementsByClassName("tool")[0], {
+	group: "canard",
+	onAdd: function(e) {
+		console.log("AAAAAD", e.item);
+	},
+	onRemove: function(e) {
+		console.log("REMOVEEEE", e.item);
+		var item = e.item.cloneNode(true);
+		parentTool.appendChild(item);
+		secondItem = item; 
+	},
+	onStart: function(e) {
+		item = null;
+		secondItem = null;
+		parentTool = e.item.parentNode;
 		//spring.setCurrentValue(-1);
 		spring.setEndValue(-1);
 	},

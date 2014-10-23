@@ -21,6 +21,8 @@ body {
 
 .visual-customer-journey {
     margin-bottom:1em;
+    white-space: nowrap;
+    overflow-x:auto;
     position:relative;
     text-align: center;
 
@@ -29,7 +31,7 @@ body {
         margin:0;
         position:absolute;
         top:50%;
-        $height:5px;
+        $height:4px;
         height:$height; 
         margin-top:-$height/2;
         width:100%;
@@ -37,8 +39,8 @@ body {
     }
 
     .visual-touchpoints {
-        display: flex;
-        justify-content:center;
+        //display: flex;
+        //justify-content:center;
     }
 }
 
@@ -69,6 +71,7 @@ $touchpoint-border-size: 0.06em;
     &:before {
         width: $touchpoint-size - $touchpoint-border-size;
         display: block;
+        content:"a";
     }
 
     &.visual-social-media-message:before {
@@ -164,4 +167,77 @@ $touchpoint-border-size: 0.06em;
     .jumbotron {
         border-bottom: 0;
     }
+}
+
+.left,.bottom,.main {
+    position:absolute;
+}
+
+$left-width: 16em;
+$bottom-height: 10em;
+
+.main {
+    left:$left-width;
+    right:0;
+    top:0;
+    bottom:$bottom-height;
+    padding-top:20px;
+
+}
+
+.left {
+    left:0;
+    width:$left-width;
+    top:0;
+    bottom:0;
+    background:grey;
+    background:rgb(214, 220, 224);
+}
+
+.bottom {
+    left:$left-width;
+    bottom:0;
+    right:0;
+    height:$bottom-height;
+    background: #eaeaea;
+}
+
+.visual-transparent-input:not(:focus):not(:hover) {
+    border-color:transparent;
+    box-shadow:none;
+}
+
+.visual-title {
+    font-size:2.2em;
+    height:60px;
+}
+
+.bottom {
+    .tool {
+        width:8em;
+        text-align: center;
+    }
+    .visual-touchpoint {
+        display: block;
+        margin: 20px auto 10px auto;
+    }
+}
+
+.left {
+    h3 {
+        text-align: center;
+        margin-top:15px;
+    }
+}
+
+.main {
+    display:flex;
+    flex-direction: column;
+}
+
+.ijumbotron {
+    flex-grow:1;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
 }
