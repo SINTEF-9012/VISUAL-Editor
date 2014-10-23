@@ -23,6 +23,8 @@ body {
     margin-bottom:1em;
     white-space: nowrap;
     overflow-x:auto;
+    overflow-y:hidden;
+    height:7em;
     position:relative;
     text-align: center;
 
@@ -169,7 +171,7 @@ $touchpoint-border-size: 0.06em;
     }
 }
 
-.left,.bottom,.main {
+.left,.layout.bottom,.main {
     position:absolute;
 }
 
@@ -194,7 +196,7 @@ $bottom-height: 10em;
     background:rgb(214, 220, 224);
 }
 
-.bottom {
+.layout.bottom {
     left:$left-width;
     bottom:0;
     right:0;
@@ -240,4 +242,15 @@ $bottom-height: 10em;
     display:flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.touchpoint-panel {
+    font-family: 'visualregular';
+    font-size:2em;
+    text-align:justify;
+}
+
+.popover {
+    border-radius:0;
+    max-width:320px;
 }
