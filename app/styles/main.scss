@@ -6,6 +6,8 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 
 @import "./webfont/stylesheet.css";
 
+@import "./visual";
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -74,25 +76,6 @@ $touchpoint-border-size: 0.06em;
         width: $touchpoint-size - $touchpoint-border-size;
         display: block;
         content:"a";
-    }
-
-    &.visual-social-media-message:before {
-        content: "g";
-    }
-    &.visual-telephone-conversation:before {
-        content: "a";
-    }
-    &.visual-letter:before {
-        content: "d";
-    }
-    &.visual-e-mail:before {
-        content: "b";
-    }
-    &.visual-call-centre:before {
-        content: "e";
-    }
-    &.visual-shopping-2:before {
-        content: "L";
     }
 }
 
@@ -214,7 +197,7 @@ $bottom-height: 10em;
     height:60px;
 }
 
-.bottom {
+.layout.bottom {
     .tool {
         width:8em;
         text-align: center;
@@ -253,4 +236,17 @@ $bottom-height: 10em;
 .popover {
     border-radius:0;
     max-width:320px;
+}
+
+.popover-btn {
+    background: none;
+    border:none;
+    font-size:6px;
+
+    .visual-touchpoint {
+        border:none;
+        border-radius:0;
+        display:inline;
+        margin:0;
+    }
 }

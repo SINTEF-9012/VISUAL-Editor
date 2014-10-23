@@ -47,17 +47,22 @@ window.scale = function scale(el, val) {
 	}
 
 
-	val = Math.pow(val, 1.42);
-	var height = canard.height();
-	var ratioHeight = (height+10)*(1-val)*-0.75;
+	var pval = val;//Math.pow(val, 1.42);
+	var height = canard.outerHeight()+10;
+
+	var touchPointGeorge = touchpointHeight * (1-val) * 0.5;
+
+	// console.log(touchPointGeorge)
+
+	var ratioHeight = (height+10)*(1-val)*-0.5 - touchPointGeorge;
 	v = 'translate3d(0,'+ratioHeight+'px,0)'
-		+' scale3d(' + val + ', ' + val + ', 1)';
+		+' scale3d(' + pval + ', ' + pval + ', 1)';
 	canard[0].style.transform = v;
 
-	height = lapin.height();
-	ratioHeight = (height+10)*(1-val)*0.75;
+	height = lapin.outerHeight()+10;
+	ratioHeight = (height)*(1-val)*0.5 + touchPointGeorge;
 	v = 'translate3d(0,'+ratioHeight+'px,0)'
-		+' scale3d(' + val + ', ' + val + ', 1)';
+		+' scale3d(' + pval + ', ' + pval + ', 1)';
 	lapin[0].style.transform = v;
 }
 
@@ -145,6 +150,7 @@ function hidePopover() {
 	hidePopoverTimeout = window.setTimeout(function() {
 		lapin.hide();
 		canard.hide();
+		lastSelectedTouchpoint = null;// todo soir
 	}, 300);
 }
 
@@ -159,21 +165,23 @@ $(document).click(function(e) {
 
 var lastSelectedTouchpoint = null;
 
+function addTouchpointListeners(touchpoint) {
+	touchpoint.addEventListener('click', function(){
+		if (closeDelay !== 0) {
+			window.clearTimeout(closeDelay);
+			closeDelay = 0;
+		}
+
+		lastSelectedTouchpoint = touchpoint;
+		movePopover(touchpoint);
+		//console.log("click");
+	});
+};
+
 for (var i = 0,
 	t = el.getElementsByClassName('visual-touchpoint'),
 	l = t.length; i < l; ++i) {
-	(function(e) {
-		e.addEventListener('click', function(){
-			if (closeDelay !== 0) {
-				window.clearTimeout(closeDelay);
-				closeDelay = 0;
-			}
-
-			lastSelectedTouchpoint = e;
-			movePopover(e);
-			//console.log("click");
-		});
-	})(t[i]);
+		addTouchpointListeners(t[i]);
 }
 
 $(window).resize(function() {
@@ -198,6 +206,11 @@ var roger = null;
 new Sortable(el, {
 	group: "canard",
 	draggable: '.visual-touchpoint',
+	onAdd: function(e) {
+		console.log("aaad?", e.item);
+		e.item.classList.remove('visual-touchpoint-template');
+		addTouchpointListeners(e.item);
+	},
 	onUpdate: function(e) {
 		hasBeenUpdated = true;
 	},
@@ -258,3 +271,16 @@ roger = new Sortable(document.getElementsByClassName("tool")[0], {
 	}
 });
 
+$('button.popover-btn').click(function() {
+	if (!item) {
+		console.log("todo see");
+		return;
+	}
+
+	item.className = this.firstChild.className;
+
+	var t = document.getElementsByClassName('visual-touchpoint-template');
+	if (t.length) {
+		t[0].className = item.className + " visual-touchpoint-template";
+	}
+});
