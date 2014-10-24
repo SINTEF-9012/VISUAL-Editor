@@ -155,8 +155,8 @@ function hidePopover() {
 }
 
 $(document).click(function(e) {
-	if (!e.target.classList.contains("visual-touchpoint") ||
-		e.target.classList.contains("visual-touchpoint-template")) {
+	if ((!e.target.classList.contains("visual-touchpoint") ||
+		e.target.classList.contains("visual-touchpoint-template")) && e.target.tagName != 'BUTTON') {
 		hidePopover();
 	}
 	//if (!$(this).hasClass('visual-touchpoint')) {
@@ -280,9 +280,9 @@ $('button.popover-btn').click(function() {
 	var t = document.getElementsByClassName('visual-touchpoint-template');
 
 	if (this.classList.contains("popover-actor-btn")) {
-		item.style.borderColor = this.style.background;
+		item.style.borderColor = this.style.backgroundColor;
 		if (t.length) {
-			t[0].style.borderColor = this.style.background; 
+			t[0].style.borderColor = this.style.backgroundColor; 
 		}
 		return;	
 	}
