@@ -166,7 +166,10 @@ $(document).click(function(e) {
 var lastSelectedTouchpoint = null;
 
 function addTouchpointListeners(touchpoint) {
-	touchpoint.addEventListener('click', function(){
+	touchpoint.addEventListener('click', function(e){
+		if (e.target.tagName === "TEXTAREA") {
+			return;
+		}
 		if (closeDelay !== 0) {
 			window.clearTimeout(closeDelay);
 			closeDelay = 0;
@@ -206,6 +209,7 @@ var roger = null;
 new Sortable(el, {
 	group: "canard",
 	draggable: '.visual-touchpoint',
+	filter: "textarea",
 	onAdd: function(e) {
 		console.log("aaad?", e.item);
 		e.item.classList.remove('visual-touchpoint-template');
@@ -215,6 +219,7 @@ new Sortable(el, {
 		hasBeenUpdated = true;
 	},
 	onStart: function(e) {
+		console.log("start");
 		if (e.item !== item && item) {
 			scale(item, 1.0);
 		}
@@ -233,6 +238,7 @@ new Sortable(el, {
 		roger.options.group = "laaaaaapin";
 	},
 	onEnd: function(e) {
+		console.log("end");
 		item = e.item;
 		spring.setEndValue(0);
 		roger.options.group = "canard";

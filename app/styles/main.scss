@@ -26,7 +26,7 @@ body {
     white-space: nowrap;
     overflow-x:auto;
     overflow-y:hidden;
-    height:7em;
+    //height:7em;
     position:relative;
     text-align: center;
 
@@ -45,6 +45,11 @@ body {
     .visual-touchpoints {
         //display: flex;
         //justify-content:center;
+    }
+
+    .visual-touchpoint {
+        margin-top: 2em;
+        margin-bottom: 2em;
     }
 }
 
@@ -255,4 +260,33 @@ $bottom-height: 10em;
         width:30px;
         border-radius:50%;
     }
+}
+
+.visual-touchpoint textarea {
+    position: relative;
+    resize:none;
+    top: -270%;
+    width: 200%;
+    left:50%;
+    // display: inline-block;
+    float: right;
+    height: 100px;
+    font-size:12px;
+    line-height: 14px;
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.visual-touchpoint .touchpoint-title {
+    position: relative;
+    top: -270%;
+    width: 200%;
+    left:50%;
+    // display: inline-block;
+    float: right;
+    height: 100px;
+    font-size:12px;
+    line-height: 14px;
+    text-align: center;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
