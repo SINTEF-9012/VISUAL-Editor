@@ -17,8 +17,19 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/vendor/assets/font
 
 /* Space out content a bit */
 body {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    //padding-top: 20px;
+    //padding-bottom: 20px;
+}
+
+canvas, svg {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: -1;
 }
 
 .visual-customer-journey {
@@ -289,4 +300,84 @@ $bottom-height: 10em;
     line-height: 14px;
     text-align: center;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.drag {
+    position:absolute;
+    width:100px;
+    height:100px;
+    background:grey;
+}
+
+body > div {
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+
+    background-color: transparent;
+    background-image:
+        linear-gradient(
+            0deg,
+            transparent 24%,
+            rgba(0, 0, 0, .05) 25%,
+            rgba(0, 0, 0, .05) 26%,
+            transparent 27%,
+            transparent 74%,
+            rgba(0, 0, 0, .05) 75%,
+            rgba(0, 0, 0, .05) 76%,
+            transparent 77%,
+            transparent),
+        linear-gradient(
+            90deg,
+            transparent 24%,
+            rgba(0, 0, 0, .05) 25%,
+            rgba(0, 0, 0, .05) 26%,
+            transparent 27%,
+            transparent 74%,
+            rgba(0, 0, 0, .05) 75%,
+            rgba(0, 0, 0, .05) 76%,
+            transparent 77%,
+            transparent);
+    height:100%;
+    background-size:100px 100px;
+    background-position:25px 25px;
+}
+
+#canard {
+    left:250px;
+    top:50px;
+    background:#673ab7;
+}
+
+#lapin {
+    left:50px;
+    top:100px;
+    background: #ff5722;
+}
+
+#poisson {
+    left:300px;
+    top:300px;
+    background: #00bcd4;
+}
+
+#vache {
+    top:400px;
+    left:50px;
+    background:#259b24;
+}
+
+#poney {
+    top:200px;
+    left:200px;
+    background: #3F51B5;
+}
+
+svg {
+    path {
+        fill: none;
+        // stroke: blue;
+    }
 }

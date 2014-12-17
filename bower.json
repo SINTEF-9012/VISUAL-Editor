@@ -6,7 +6,9 @@
     "modernizr": "~2.6.2",
     "jquery": "~1.11.0",
     "Sortable": "~0.5.2",
-    "rebound-js": "~0.0.10"
+    "rebound-js": "~0.0.10",
+    "d3": "~3.5.2",
+    "draggabilly": "~1.1.1"
   },
   "devDependencies": {}
 }
