@@ -62,6 +62,13 @@ var connect = function(bA, bB) {
 		x: posB.left + bB.width()/2
 	};
 
+	if (startA.x < startB.x) {
+		startA.x += bA.width()/2;
+	}
+	else if (startB.x < startA.x) {
+		startB.x += bB.width()/2;
+	}
+
 	var svg = d3.select("svg");
 	var astarGraph = new Graph(astarGrid);
 
@@ -150,10 +157,13 @@ var connect = function(bA, bB) {
 	});
 
 	console.log(lineData.length)
-	lineData = simplify(lineData, 40);
+	var newLineData = lineData.splice(0, 2);
+	Array.prototype.push.apply(newLineData,
+		simplify(lineData.splice(2, lineData.length-4), 40));
+	Array.prototype.push.apply(newLineData, lineData.splice(-2, 2));
 	console.log(lineData.length)
 	svg.append("path")
-		.attr("d", lineFunction(lineData))
+		.attr("d", lineFunction(newLineData))
 		.attr("stroke-width", 3)
 		.attr("stroke", "green");
 }
