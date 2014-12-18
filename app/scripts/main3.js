@@ -5,6 +5,8 @@ var height = window.innerHeight,
 
 var first = true;
 
+var grid = [], astarGrid = [];
+
 window.onload = function() {
 	$('svg path, svg rect').remove();
 	var boxes = $('.drag');
@@ -51,44 +53,109 @@ var connect = function(bA, bB) {
 	var posA = bA.position(),
 		posB = bB.position();
 
-	if (posA.left > posB.left) {
-		var posC = posB;
-		posB = posA;
-		posA =  posC;
-	}
-
-
 	var startA = {
-		x: posA.top + bA.width()/2,
-		y: posA.left + bA.height()/2
+		y: posA.top + bA.height()/2,
+		x: posA.left + bA.width()/2
 	},
 	startB = {
-		x: posB.top + bB.width()/2,
-		y: posB.left + bB.height()/2
+		y: posB.top + bB.height()/2,
+		x: posB.left + bB.width()/2
 	};
 
+	var svg = d3.select("svg");
+	var astarGraph = new Graph(astarGrid);
+
+
+	var start = null, end = null;
+	$.each(astarGraph.nodes, function(i, n){
+		var cell = grid[n.x][n.y];
+		if (start === null && startA.x >= cell.startX && startA.x <= cell.endX &&
+			startA.y >= cell.startY && startA.y <= cell.endY) {
+			start = n;
+			if (end) return false;
+		}
+		if (end === null && startB.x >= cell.startX && startB.x <= cell.endX &&
+			startB.y >= cell.startY && startB.y <= cell.endY) {
+			end = n;
+			if (start) return false;
+		}
+	});
+
+	if (!start || !end) {
+		console.log("ai");
+		return;
+		}
+
+	var getCost = function(old) {
+		if (!old.t) old.t = 1;
+		if (old.x === this.x) {
+			// console.log("VERTICAL");
+			this.d = 1;
+		} else if (old.y === this.y) {
+			// console.log("HORIZONTAL");
+			this.d = 2;
+		}
+		if (old.d !== this.d) {
+			this.t = old.t + 1;
+		} else {
+			this.t = old.t;
+		}
+		return this.type * 10 + this.t;
+	}
+	astarGraph.nodes.forEach(function(n){
+		n.getCost = getCost;
+	});
+	var search = astar.search(
+		astarGraph,
+		start, end,
+		{
+			heuristic: function(a,b){
+				return 0;
+				var cellA = grid[a.x][a.y],
+					cellB = grid[b.x][b.y];
+				// 	console.log(cellA, cellB)
+				var d1 = Math.abs(cellB.centerX - cellA.centerX);
+				var d2 = Math.abs(cellB.centerY - cellA.centerY);
+				// // console.log(b.x, a.x);
+				// if (b.x != a.x || b.y != a.y) {
+				// 	d1 += 100;
+				// }
+				return d1 + d2;
+			}
+		});
+	console.log(search);
+
 	var lineFunction = d3.svg.line()
-		.x(function(d){return d.y;})
-		.y(function(d){return d.x;})
+		.x(function(d){return d.x;})
+		.y(function(d){return d.y;})
 		.interpolate("linear");
 
-	var svg = d3.select("svg");
-	var line = svg.append("path")
-		.attr("d", lineFunction([startA, startB]))
-		.attr("stroke-width", 3)
-		.attr("stroke", "brown");
+	var lineData = [];
 
-	var newLine = [startA, {
-		y: posA.left + (bA.width() * (startA.y > startB.y ? 2 : 2)),
-		x: startA.x
-	}, {
-		y: posB.left - 100,
-		x: startB.x,
-	}, startB] 
-	var line = svg.append("path")
-		.attr("d", lineFunction(newLine))
+	search.unshift(start);
+	search.forEach(function(t) {
+		var cell = grid[t.x][t.y];
+		svg.append("rect")
+			.attr("fill", "green")
+			.attr("opacity", 0.3)
+			.attr("x", cell.startX)
+			.attr("y", cell.startY)
+			.attr("width", cell.endX-cell.startX)
+			.attr("height", cell.endY-cell.startY);
+		lineData.push({
+			x: cell.centerX,
+			y: cell.centerY
+		})
+
+	});
+
+	console.log(lineData.length)
+	lineData = simplify(lineData, 40);
+	console.log(lineData.length)
+	svg.append("path")
+		.attr("d", lineFunction(lineData))
 		.attr("stroke-width", 3)
-		.attr("stroke", "orange");
+		.attr("stroke", "green");
 }
 
 var drawGrid = function(boxes){
@@ -169,7 +236,8 @@ var drawGrid = function(boxes){
 	});
 
 	console.log(vertical, horizontal);
-	var grid = [], astarGrid = [];
+	grid = [];
+	astarGrid = [];
 
 	for (var i = 1, l = horizontal.length; i < l; ++i) {
 		var row = [], astarRow = [];
@@ -192,7 +260,7 @@ var drawGrid = function(boxes){
 				// console.log(boxe.startY, startY, boxe.endY, endY)
 				if (startX >= boxe.startX && startY >= boxe.startY &&
 					endX <= boxe.endX && endY <= boxe.endY) {
-					score += 5;
+					score += 8;
 				} else {
 					var distance = (centerX - boxe.centerX) * (centerX - boxe.centerX)
 						+ (centerY - boxe.centerY) * (centerY - boxe.centerY);
@@ -228,78 +296,6 @@ var drawGrid = function(boxes){
 	}
 
 
-	console.log(grid);
+	// console.log(grid);
 
-	var astarGraph = new Graph(astarGrid);
-	var getCost = function(old) {
-		if (!old.t) old.t = 1;
-		if (old.x === this.x) {
-			// console.log("VERTICAL");
-			this.d = 1;
-		} else if (old.y === this.y) {
-			// console.log("HORIZONTAL");
-			this.d = 2;
-		}
-		if (old.d !== this.d) {
-			this.t = old.t + 1;
-		} else {
-			this.t = old.t;
-		}
-		return this.type * 10 + this.t;
-	}
-	astarGraph.nodes.forEach(function(n){
-		n.getCost = getCost;
-	});
-	var search = astar.search(
-		astarGraph,
-		astarGraph.grid[0][0],
-		astarGraph.grid[grid.length-3][grid[0].length-3],
-		{
-			heuristic: function(a,b){
-				return 0;
-				var cellA = grid[a.x][a.y],
-					cellB = grid[b.x][b.y];
-				// 	console.log(cellA, cellB)
-				var d1 = Math.abs(cellB.centerX - cellA.centerX);
-				var d2 = Math.abs(cellB.centerY - cellA.centerY);
-				// // console.log(b.x, a.x);
-				// if (b.x != a.x || b.y != a.y) {
-				// 	d1 += 100;
-				// }
-				return d1 + d2;
-			}
-		});
-	console.log(search);
-
-	var lineFunction = d3.svg.line()
-		.x(function(d){return d.x;})
-		.y(function(d){return d.y;})
-		.interpolate("linear");
-
-	var lineData = [];
-
-	search.unshift(astarGraph.grid[0][0]);
-	search.forEach(function(t) {
-		var cell = grid[t.x][t.y];
-		svg.append("rect")
-			.attr("fill", "green")
-			.attr("opacity", 0.5)
-			.attr("x", cell.startX)
-			.attr("y", cell.startY)
-			.attr("width", cell.endX-cell.startX)
-			.attr("height", cell.endY-cell.startY);
-		lineData.push({
-			x: cell.centerX,
-			y: cell.centerY
-		})
-
-	});
-
-	console.log(lineData.length)
-	lineData = simplify(lineData, 40);
-	console.log(lineData.length)
-	svg.append("path")
-		.attr("d", lineFunction(lineData))
-		.attr("stroke-width", 3)
-		.attr("stroke", "green");
 }
