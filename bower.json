@@ -8,7 +8,9 @@
     "Sortable": "~0.5.2",
     "rebound-js": "~0.0.10",
     "d3": "~3.5.2",
-    "draggabilly": "~1.1.1"
+    "draggabilly": "~1.1.1",
+    "astar": "~0.3.0",
+    "simplify-js": "mourner/simplify-js"
   },
   "devDependencies": {}
 }
