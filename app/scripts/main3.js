@@ -23,7 +23,11 @@ window.onload = function() {
 				$('svg path, svg rect').remove();
 				drawGrid(boxes);
 				connectBoxes(connectedBoxes);
-			});
+			})/*.on('dragMove', function() {
+				$('svg path, svg rect').remove();
+				drawGrid(boxes);
+				connectBoxes(connectedBoxes);
+			})*/;
 		}
 	});
 
@@ -107,7 +111,7 @@ var connect = function(bA, bB) {
 		} else {
 			this.t = old.t;
 		}
-		return this.type * 10 + this.t;
+		return this.type * 8 + this.t;
 	}
 	astarGraph.nodes.forEach(function(n){
 		n.getCost = getCost;
@@ -159,7 +163,7 @@ var connect = function(bA, bB) {
 	console.log(lineData.length)
 	var newLineData = lineData.splice(0, 2);
 	Array.prototype.push.apply(newLineData,
-		simplify(lineData.splice(2, lineData.length-4), 40));
+		simplify(lineData.splice(2, lineData.length-4), 26));
 	Array.prototype.push.apply(newLineData, lineData.splice(-2, 2));
 	console.log(lineData.length)
 	svg.append("path")
@@ -187,10 +191,10 @@ var drawGrid = function(boxes){
 			height = jthis.height(),
 			width = jthis.width();
 
-		horizontal.push(pos.top);
-		horizontal.push(pos.top+height);
-		vertical.push(pos.left);
-		vertical.push(pos.left+width);
+		//horizontal.push(pos.top);
+		//horizontal.push(pos.top+height);
+		//vertical.push(pos.left);
+		//vertical.push(pos.left+width);
 
 		computedBoxes.push({
 			startX: pos.left,
@@ -277,7 +281,7 @@ var drawGrid = function(boxes){
 
 					var c = 1/(distance/5000);
 					if (c > 0.05)
-						score += c*1.33;
+						score += c*1.83;
 				}
 			});
 
